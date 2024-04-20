@@ -32,7 +32,7 @@
 The component library built with this template can be used in any project that supports TailwindCSS. After publishing your component library to NPM, you can install it in your project by running:
 
 ```
-npm install <my-component-library>
+npm install @maany_shr/rage-ui-kit
 ```
 
 You should then configure the `tailwind.config.js` file in your project to include the styles from the component library.
