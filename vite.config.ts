@@ -19,6 +19,14 @@ export default defineConfig({
         find: /^@\/assets\/(.*)/,
         replacement: path.resolve(__dirname, "lib/assets/$1"),
       },
+      {
+        find: /^@\/ui\/(.*)/,
+        replacement: path.resolve(__dirname, "lib/ui/$1"),
+      },
+      {
+        find: /^@\/utils\/(.*)/,
+        replacement: path.resolve(__dirname, "lib/utils/$1"),
+      },
     ],
   },
   test: {
@@ -30,6 +38,14 @@ export default defineConfig({
       {
         find: /^@\/assets\/(.*)/,
         replacement: path.resolve(__dirname, "lib/assets/$1"),
+      },
+      {
+        find: /^@\/ui\/(.*)/,
+        replacement: path.resolve(__dirname, "lib/ui/$1"),
+      },
+      {
+        find: /^@\/utils\/(.*)/,
+        replacement: path.resolve(__dirname, "lib/utils/$1"),
       },
     ],
     clearMocks: true,

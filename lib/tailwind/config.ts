@@ -8,50 +8,36 @@ const theme = {
   extend: {
     colors: {
       brand: {
-        100: "#E1F5FE",
-        200: "#B3E5FC",
-        300: "#81D4FA",
-        400: "#4FC3F7",
-        500: "#29B6F6",
-        600: "#03A9F4",
-        700: "#039BE5",
-        800: "#0288D1",
-        900: "#01579B",
+        100: "#e0f2fe",
+        200: "#bae6fd",
+        300: "#7dd3fc",
+        400: "#38bdf8",
+        500: "#0ea5e9",
+        600: "#0284c7",
+        700: "#0369a1",
+        800: "#075985",
+        900: "#0c4a6e",
+        950: "#082f49",
       },
       accent: {
-        100: "#FF80AB",
-        200: "#FF4081",
-        300: "#F50057",
-        400: "#C51162",
-        500: "#880E4F",
-        600: "#AD1457",
-        700: "#C2185B",
-        800: "#D81B60",
-        900: "#E91E63",
-      },
-      text: {
-        primary: "#FFF",
+        primary: "#f8fafc",
         secondary: "#757575",
-        disabled: "#BDBDBD",
-        hint: "#9E9E9E",
-        inverted: "#000000", // Changed from white to black
-      },
-      supporting: {
-        success: "#4CAF50", // Green
-        error: "#F44336", // Red
-        warning: "#FFC107", // Yellow
-        info: "#2196F3", // Blue
+        inverted: "#000000",
+        success: "#065f46", // Green
+        error: "#991b1b", // Red
+        warning: "#ca8a04", // Yellow
+        info: "#075985", // Blue
       },
       neutral: {
-        100: "#F5F5F5",
-        200: "#EEEEEE",
-        300: "#E0E0E0",
-        400: "#BDBDBD",
-        500: "#9E9E9E",
-        600: "#757575",
-        700: "#616161",
-        800: "#424242",
-        900: "#212121",
+        100: "#f1f5f9",
+        200: "#e2e8f0",
+        300: "#cbd5e1",
+        400: "#94a3b8",
+        500: "#64748b",
+        600: "#475569",
+        700: "#334155",
+        800: "#1e293b",
+        900: "#0f172a",
       },
     },
   },

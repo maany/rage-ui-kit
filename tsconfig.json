@@ -23,7 +23,9 @@
     "types": ["@testing-library/jest-dom", "vite/client"],
     "paths": {
       "@/components/*": ["./lib/components/*"],
+      "@/utils/*": ["./lib/utils/*"],
       "@/assets/*": ["./lib/assets/*"],
+      "@/ui/*": ["./lib/components/ui/*"],
     }
   },
   "include": ["app", "lib", "tests", "stories"],
