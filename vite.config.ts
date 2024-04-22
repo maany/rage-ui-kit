@@ -21,7 +21,7 @@ export default defineConfig({
       },
       {
         find: /^@\/ui\/(.*)/,
-        replacement: path.resolve(__dirname, "lib/ui/$1"),
+        replacement: path.resolve(__dirname, "lib/components/ui/$1"),
       },
       {
         find: /^@\/utils\/(.*)/,

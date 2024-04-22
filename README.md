@@ -67,7 +67,6 @@ export default {
 };
 ```
 
-```js
 Additionally, modify the `content` array in the Tailwind Config to include the components from the component library:
 
 ```js
