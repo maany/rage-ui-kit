@@ -49,32 +49,183 @@ Then, include the theme in your project's `tailwind.config.js` file:
 export default {
   theme: {
     ...defaultTheme,
-    extend: {
-    },
+    // other theme configurations, be careful not to override the default theme or provide a merged theme object here
   },
   plugins: [],
 };
 ```
 
+Then, include the plugins from the component library in your project's `tailwind.config.js` file:
+
+```js
+import { defaultPlugins } from "@maany_shr/rage-ui-kit";
+
+export default {
+  plugins: [defaultPlugins.map((plugin) => require(plugin))].extend([
+    // other plugins
+  ]),
+};
+```
+
+```js
 Additionally, modify the `content` array in the Tailwind Config to include the components from the component library:
 
 ```js
 export default {
   content: [
-    "node_modules/@maany_shr/rage-ui-kit/dist/**/*.js",
+    "@maany_shr/rage-ui-kit/dist/**/*.js",
     ...other sources
   ],
   theme: {
     ...defaultTheme,
-    extend: {
-    },
+    // other theme configurations
   },
 }
 ```
 
+An example of a `tailwind.config.ts` file that includes the component library is shown below:
+
+```ts
+import type { Config } from "tailwindcss"
+import { defaultTheme, defaultPlugins } from "@maany_shr/rage-ui-kit"
+
+const config = {
+  darkMode: ["class"],
+  content: [
+    './node_modules/@maany_shr/rage-ui-kit/dist/**/*.js',
+    ...your content sources
+  ],
+  prefix: "",
+  theme: {
+    extend: {
+      ...defaultTheme.extend
+    },
+  },
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-argument
+  plugins: [defaultPlugins.map((plugin: string) => require(plugin))],
+  // plugins: [require("tailwindcss-animate")],
+} satisfies Config
+
+export default config
+```
+
+The corresponding `tailwind.config.js` file is shown below:
+
+```js
+/** @type {import('tailwindcss').Config} */
+import {
+  defaultTheme,
+  defaultContent,
+  defaultPlugins,
+} from "./lib/tailwind/config";
+module.exports = {
+  content: ['/node_modules/@maany_shr/rage-ui-kit/dist/**/*.js', ...defaultContent],
+  prefix: "",
+
+  theme: {
+    ...defaultTheme,
+  },
+  plugins: [defaultPlugins.map((plugin) => require(plugin))],
+};
+
+```
 
 Then you can import and use the components in your project:
 
 ```tsx
 import { Button } from '@maany_shr/rage-ui-kit';
+```
+### Dark Mode
+You might have to add the following to your `tailwind.config.js` file to enable dark mode:
+
+```js
+module.exports = {
+  darkMode: 'class',
+  // other configurations
+}
+```
+
+Then you can use the dark mode classes in your project:
+
+```html
+<div class="bg-white dark:bg-black">
+  <!-- content -->
+</div>
+```
+
+Please check the `lib/tailwind/config.ts` file and the `tailwind.config.js` file in this ui kit to see if you need  to include any other configurations in your project.
+
+
+## Development
+### Local Development
+To start the development server, run:
+
+```
+npm run dev
+```
+
+This will start the `Storybook` server at `http://localhost:6006`.
+
+### Development against a project
+
+
+#### Setup
+To develop against a project, you can link the component library to the project. First, build the component library:
+
+```
+npm run build
+```
+
+Then, link the component library to the project:
+
+```
+cd dist
+npm link
+```
+
+In the project, link the component library:
+
+```
+npm link @maany_shr/rage-ui-kit
+```
+
+Then, start the development server in the component library:
+
+```
+npm run build:watch
+```
+
+After that configure TailwindCSS as desribed in the [Usage](#usage) section.
+
+
+#### Cleanup
+To unlink the component library from the project, run:
+
+```
+npm unlink @maany_shr/rage-ui-kit
+```
+
+Then, unlink the component library:
+
+```
+cd dist
+npm unlink
+```
+
+In case you forgot to unlink the component library, 
+
+```
+npm rm --global "@maany_shr/rage-ui-kit"
+```
+
+Verify the global package is removed:
+
+```
+npm list -g --depth=0
+```
+
+Then, in the project, do a clean install:
+
+```
+npm ci 
 ```
