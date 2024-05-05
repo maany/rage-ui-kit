@@ -22,11 +22,13 @@ export function SiteHeader(props: SiteHeaderProps) {
         <div className="flex items-center gap-2">{props.icon}</div>
         {props.title}
       </div>
-      <div className="flex flex-grow items-center justify-end">
+      <div
+        id="site-header-children"
+        className="flex flex-grow items-center justify-end"
+      >
         {props.children}
       </div>
-      <div className="">
-        hahaha
+      <div id="site-header-tail" className="">
         <Button variant="outline" label={<LogOut />} size="icon"></Button>
       </div>
     </div>
