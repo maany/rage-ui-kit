@@ -6,6 +6,7 @@ import { glob } from "glob";
 import { extname, relative } from "path";
 import { fileURLToPath } from "node:url";
 import { peerDependencies } from "./package.json";
+import preserveDirectives from "rollup-plugin-preserve-directives";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -111,6 +112,7 @@ export default defineConfig({
       output: {
         assetFileNames: "assets/[name][extname]",
         entryFileNames: "[name].js",
+        preserveModules: true,
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
@@ -119,6 +121,7 @@ export default defineConfig({
           ...peerDependencies,
         },
       },
+      plugins: [preserveDirectives()],
     },
     target: "esnext",
     sourcemap: true,

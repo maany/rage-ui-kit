@@ -29,6 +29,9 @@
 </div>
 
 ## Usage
+
+### Installation and Configuration
+
 The component library built with this template can be used in any project that supports TailwindCSS. After publishing your component library to NPM, you can install it in your project by running:
 
 ```
@@ -118,7 +121,10 @@ import {
   defaultPlugins,
 } from "./lib/tailwind/config";
 module.exports = {
-  content: ['/node_modules/@maany_shr/rage-ui-kit/dist/**/*.js', ...defaultContent],
+  content: [
+    "/node_modules/@maany_shr/rage-ui-kit/dist/**/*.js",
+    ...defaultContent,
+  ],
   prefix: "",
 
   theme: {
@@ -126,41 +132,67 @@ module.exports = {
   },
   plugins: [defaultPlugins.map((plugin) => require(plugin))],
 };
-
 ```
 
 Then you can import and use the components in your project:
 
 ```tsx
-import { Button } from '@maany_shr/rage-ui-kit';
+import { Button } from "@maany_shr/rage-ui-kit";
 ```
-### Dark Mode
-You might have to add the following to your `tailwind.config.js` file to enable dark mode:
+
+### Additional TaiwindCSS Configuration
+
+Your project's TailwindCSS configuration might need additional configurations.
+Please check the `lib/tailwind/config.ts` file and the `tailwind.config.js` file in this ui kit to see if you need to include any other configurations in your project.
+
+For example, if you want to enable dark mode in your project, you can add the following configuration to your `tailwind.config.js` file:
 
 ```js
 module.exports = {
-  darkMode: 'class',
+  darkMode: "class",
   // other configurations
+};
+```
+
+### Theme Configuration
+
+Please install the `next-themes` package and create a `ThemeProvider` component in your project with the following code:
+
+```tsx
+"use client";
+
+import * as React from "react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { type ThemeProviderProps } from "next-themes/dist/types";
+
+export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
+  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
 ```
 
-Then you can use the dark mode classes in your project:
+You can then wrap your application with the `ThemeProvider` component:
 
-```html
-<div class="bg-white dark:bg-black">
-  <!-- content -->
-</div>
+```tsx
+<ThemeProvider
+            defaultTheme="system"
+            attribute="class"
+            enableSystem
+            disableTransitionOnChange
+>
+  {your app component}
+</ThemeProvider>
 ```
 
-Please check the `lib/tailwind/config.ts` file and the `tailwind.config.js` file in this ui kit to see if you need  to include any other configurations in your project.
-
+Read More: https://ui.shadcn.com/docs/dark-mode/next 
 
 ## Development
 ### Local Development
 To start the development server, run:
 
 ```
+
 npm run dev
+
 ```
 
 This will start the `Storybook` server at `http://localhost:6006`.
@@ -172,26 +204,34 @@ This will start the `Storybook` server at `http://localhost:6006`.
 To develop against a project, you can link the component library to the project. First, build the component library:
 
 ```
+
 npm run build
+
 ```
 
 Then, link the component library to the project:
 
 ```
+
 cd dist
 npm link
+
 ```
 
 In the project, link the component library:
 
 ```
+
 npm link @maany_shr/rage-ui-kit
+
 ```
 
 Then, start the development server in the component library:
 
 ```
+
 npm run build:watch
+
 ```
 
 After that configure TailwindCSS as desribed in the [Usage](#usage) section.
@@ -201,30 +241,42 @@ After that configure TailwindCSS as desribed in the [Usage](#usage) section.
 To unlink the component library from the project, run:
 
 ```
+
 npm unlink @maany_shr/rage-ui-kit
+
 ```
 
 Then, unlink the component library:
 
 ```
+
 cd dist
 npm unlink
-```
-
-In case you forgot to unlink the component library, 
 
 ```
+
+In case you forgot to unlink the component library,
+
+```
+
 npm rm --global "@maany_shr/rage-ui-kit"
+
 ```
 
 Verify the global package is removed:
 
 ```
+
 npm list -g --depth=0
+
 ```
 
 Then, in the project, do a clean install:
 
 ```
-npm ci 
+
+npm ci
+
+```
+
 ```
