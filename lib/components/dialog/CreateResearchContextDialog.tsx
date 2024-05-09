@@ -66,20 +66,23 @@ export const CreateResearchContextDialog = ({
                     <DialogDescription>Create a new research context to organize your research</DialogDescription>
                 </DialogHeader>
 
-                <div>
+                <label>
                     <ShadcnLabel>Name</ShadcnLabel>
                     <ShadcnInput
                         style={{ color: 'black', marginBottom: '8px', marginTop: '8px'}}
                         onChange={(e) => handleInputChange("researchContextName", e.target.value)}
+                        placeholder="Enter a name for the research context"
                     />
-                </div>
-                <div>
+                </label>
+
+                <label>
                     <ShadcnLabel>Description</ShadcnLabel>
                     <ShadcnInput
                         style={{ color: 'black', marginBottom: '8px', marginTop: '8px'}}
                         onChange={(e) => handleInputChange("researchContextDescription", e.target.value)}
+                        placeholder="Enter a description for the research context"
                     />
-                </div>
+                </label>
 
                 <Button
                     className="mt-8"
