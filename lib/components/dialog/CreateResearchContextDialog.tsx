@@ -15,8 +15,13 @@ import {
 import { useState } from 'react';
 import { useDarkMode } from 'storybook-dark-mode';
 
-export interface CreateResearchContextDialog {
-    buttonAction: (inputValues: { [key: string]: string }) => void;
+export interface buttonActionInputValues {
+    researchContextName: string;
+    researchContextDescription: string;
+}
+
+export interface CreateResearchContextDialogProps {
+    buttonAction: (inputValues: buttonActionInputValues) => void;
 };
 
 
@@ -26,17 +31,28 @@ export interface CreateResearchContextDialog {
 export const CreateResearchContextDialog = ({
     buttonAction,
     ...props
-}: CreateResearchContextDialog) => {
+}: CreateResearchContextDialogProps) => {
 
     const isDarkMode = useDarkMode();
 
-    const [inputValues, setInputValues] = useState<{ [key: string]: string }>({});
+    const [inputValues, setInputValues] = useState<{ researchContextName: string, researchContextDescription: string }>({ researchContextName: '', researchContextDescription: '' });
 
     const handleInputChange = (field: string, value: string) => {
         setInputValues(prev => ({ ...prev, [field]: value }));
     };
 
+    const [validation, setValidation] = useState<{ researchContextName: boolean, researchContextDescription: boolean }>({ researchContextName: false, researchContextDescription: false})
+
     const handleButtonClick = () => {
+
+        if (!inputValues.researchContextName || !inputValues.researchContextDescription) {
+            setValidation({
+                researchContextName: !inputValues.researchContextName,
+                researchContextDescription: !inputValues.researchContextDescription
+            });
+            return;
+        }
+
         buttonAction(inputValues);
     };
 
@@ -67,21 +83,31 @@ export const CreateResearchContextDialog = ({
                 </DialogHeader>
 
                 <label>
-                    <ShadcnLabel>Name</ShadcnLabel>
+                    <ShadcnLabel>Name {validation.researchContextName && <div style={{ color: 'red' }}>Required field</div>}</ShadcnLabel>
                     <ShadcnInput
-                        style={{ color: 'black', marginBottom: '8px', marginTop: '8px'}}
+                        style={{ 
+                            color: 'black',
+                            borderColor: validation.researchContextName ? 'red' : 'black',
+                            marginBottom: '8px',
+                            marginTop: '8px'}}
                         onChange={(e) => handleInputChange("researchContextName", e.target.value)}
                         placeholder="Enter a name for the research context"
                     />
+                    
                 </label>
 
                 <label>
-                    <ShadcnLabel>Description</ShadcnLabel>
+                    <ShadcnLabel>Description {validation.researchContextDescription && <div style={{ color: 'red' }}>Required field</div>}</ShadcnLabel>
                     <ShadcnInput
-                        style={{ color: 'black', marginBottom: '8px', marginTop: '8px'}}
+                        style={{ 
+                            color: 'black',
+                            borderColor: validation.researchContextDescription ? 'red' : 'black',
+                            marginBottom: '8px',
+                            marginTop: '8px'}}
                         onChange={(e) => handleInputChange("researchContextDescription", e.target.value)}
                         placeholder="Enter a description for the research context"
                     />
+                    
                 </label>
 
                 <Button

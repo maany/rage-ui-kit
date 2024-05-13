@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { CreateResearchContextDialog } from "@/components/dialog/CreateResearchContextDialog";
+import { CreateResearchContextDialog, buttonActionInputValues } from "@/components/dialog/CreateResearchContextDialog";
 
 
 import { action } from '@storybook/addon-actions';
@@ -26,7 +26,7 @@ export const EmptyAction: Story = {
 
 export const AlertExample: Story = {
     args: {
-        buttonAction: (inputValues: { [key: string]: string }) => {
+        buttonAction: (inputValues: buttonActionInputValues) => {
             const formattedInputValues = Object.entries(inputValues)
                 .map(([key, value]) => `${key}: ${value}`)
                 .join('\n   ');
