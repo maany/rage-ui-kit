@@ -1,7 +1,6 @@
 "use client";
 import {
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
   Card as ShadcnCard,
