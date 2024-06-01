@@ -1,65 +1,69 @@
 "use client";
 import { Dialog as ShadcnDialog } from "@/ui/dialog";
 import { Button } from "@/components/button/index";
-import { Label as ShadcnLabel } from "@/ui/label";
 import { Input as ShadcnInput } from "@/ui/input";
+
 import {
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
+  Form as ShadcnForm,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+import {
   DialogTrigger,
+  DialogContent,
+  DialogHeader,
   DialogClose,
+  DialogDescription,
+  DialogTitle,
 } from "@/components/ui/dialog";
 
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
 import { useDarkMode } from "storybook-dark-mode";
 
-export interface buttonActionInputValues {
+export interface onSubmitInputValues {
   researchContextName: string;
   researchContextDescription: string;
 }
 
 export interface CreateResearchContextDialogProps {
-  buttonAction: (inputValues: buttonActionInputValues) => void;
+  onSubmit: (inputValues: onSubmitInputValues) => void;
 }
+
+const formSchema = z.object({
+  researchContextName: z.string().min(1, {
+    message: "Research context name is required",
+  }),
+  researchContextDescription: z.string().min(1, {
+    message: "Research context description is required",
+  }),
+});
 
 /**
  * Create a new research context dialog
  */
 export const CreateResearchContextDialog = ({
-  buttonAction,
+  onSubmit,
   ...props
 }: CreateResearchContextDialogProps) => {
   const isDarkMode = useDarkMode();
 
-  const [inputValues, setInputValues] = useState<{
-    researchContextName: string;
-    researchContextDescription: string;
-  }>({ researchContextName: "", researchContextDescription: "" });
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      researchContextName: "",
+      researchContextDescription: "",
+    },
+  });
 
-  const handleInputChange = (field: string, value: string) => {
-    setInputValues((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const [validation, setValidation] = useState<{
-    researchContextName: boolean;
-    researchContextDescription: boolean;
-  }>({ researchContextName: false, researchContextDescription: false });
-
-  const handleButtonClick = () => {
-    if (
-      !inputValues.researchContextName ||
-      !inputValues.researchContextDescription
-    ) {
-      setValidation({
-        researchContextName: !inputValues.researchContextName,
-        researchContextDescription: !inputValues.researchContextDescription,
-      });
-      return;
-    }
-
-    buttonAction(inputValues);
+  const onSubmitWrapper = (values: z.infer<typeof formSchema>) => {
+    onSubmit(values);
   };
 
   return (
@@ -80,63 +84,76 @@ export const CreateResearchContextDialog = ({
         <DialogClose asChild className="absolute top-2 right-2" />
 
         <DialogHeader className="mb-4">
-          <DialogTitle>New research context</DialogTitle>
+          <DialogTitle>New conversation</DialogTitle>
           <DialogDescription>
-            Create a new research context to organize your research
+            Create a new conversation to organize your research
           </DialogDescription>
         </DialogHeader>
 
-        <label>
-          <ShadcnLabel>
-            Name{" "}
-            {validation.researchContextName && (
-              <div style={{ color: "red" }}>Required field</div>
-            )}
-          </ShadcnLabel>
-          <ShadcnInput
-            style={{
-              color: "black",
-              borderColor: validation.researchContextName ? "red" : "black",
-              marginBottom: "8px",
-              marginTop: "8px",
-            }}
-            onChange={(e) =>
-              handleInputChange("researchContextName", e.target.value)
-            }
-            placeholder="Enter a name for the research context"
-          />
-        </label>
+        <ShadcnForm {...form}>
+          <form onSubmit={form.handleSubmit(onSubmitWrapper)}>
+            <FormField
+              control={form.control}
+              name="researchContextName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <ShadcnInput
+                      style={{
+                        color: "black",
+                        borderColor: form.formState.errors.researchContextName
+                          ? "red"
+                          : "black",
+                        marginBottom: "8px",
+                        marginTop: "8px",
+                      }}
+                      placeholder="Enter a name for the research context"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage style={{ color: "red" }} />
+                </FormItem>
+              )}
+            />
 
-        <label>
-          <ShadcnLabel>
-            Description{" "}
-            {validation.researchContextDescription && (
-              <div style={{ color: "red" }}>Required field</div>
-            )}
-          </ShadcnLabel>
-          <ShadcnInput
-            style={{
-              color: "black",
-              borderColor: validation.researchContextDescription
-                ? "red"
-                : "black",
-              marginBottom: "8px",
-              marginTop: "8px",
-            }}
-            onChange={(e) =>
-              handleInputChange("researchContextDescription", e.target.value)
-            }
-            placeholder="Enter a description for the research context"
-          />
-        </label>
+            <FormField
+              control={form.control}
+              name="researchContextDescription"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <ShadcnInput
+                      style={{
+                        color: "black",
+                        borderColor: form.formState.errors
+                          .researchContextDescription
+                          ? "red"
+                          : "black",
+                        marginBottom: "8px",
+                        marginTop: "8px",
+                      }}
+                      placeholder="Enter a description for the research context"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage style={{ color: "red" }} />
+                </FormItem>
+              )}
+            />
 
-        <Button
-          className="mt-8"
-          variant="default"
-          size="default"
-          label="Create new research context"
-          onClick={handleButtonClick}
-        />
+            <div style={{ textAlign: "center" }}>
+              <Button
+                className="mt-8"
+                variant="default"
+                size="default"
+                label="Create new research context"
+                type="submit"
+              />
+            </div>
+          </form>
+        </ShadcnForm>
       </DialogContent>
     </ShadcnDialog>
   );

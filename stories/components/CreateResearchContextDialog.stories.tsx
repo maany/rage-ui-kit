@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import {
   CreateResearchContextDialog,
-  buttonActionInputValues,
+  onSubmitInputValues,
 } from "@/components/dialog/CreateResearchContextDialog";
 
 import { action } from "@storybook/addon-actions";
@@ -21,13 +21,13 @@ type Story = StoryObj<typeof meta>;
 
 export const EmptyAction: Story = {
   args: {
-    buttonAction: action("buttonAction"),
+    onSubmit: action("buttonAction"),
   },
 };
 
 export const AlertExample: Story = {
   args: {
-    buttonAction: (inputValues: buttonActionInputValues) => {
+    onSubmit: (inputValues: onSubmitInputValues) => {
       const formattedInputValues = Object.entries(inputValues)
         .map(([key, value]) => `${key}: ${value}`)
         .join("\n   ");

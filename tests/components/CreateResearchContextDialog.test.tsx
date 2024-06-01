@@ -1,19 +1,19 @@
 import { expect, describe, it } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import {
   CreateResearchContextDialog,
-  buttonActionInputValues,
+  onSubmitInputValues,
 } from "@/components/dialog/CreateResearchContextDialog";
 import { act } from "react-dom/test-utils";
 
 describe("<CreateResearchContextDialog/>", () => {
   it("should render the trigger of the dialog", () => {
-    render(<CreateResearchContextDialog buttonAction={() => {}} />);
+    render(<CreateResearchContextDialog onSubmit={() => {}} />);
     expect(screen.getByRole("button")).toBeInTheDocument();
   });
 
   it("should render the dialog when the trigger is clicked", () => {
-    render(<CreateResearchContextDialog buttonAction={() => {}} />);
+    render(<CreateResearchContextDialog onSubmit={() => {}} />);
     const button = screen.getByRole("button");
     fireEvent.click(button);
     expect(screen.getByRole("dialog")).toBeInTheDocument();
@@ -27,13 +27,13 @@ describe("<CreateResearchContextDialog/>", () => {
     let receivedInputValues;
 
     // Mock an alert function
-    const mockButtonAction = (inputValues: buttonActionInputValues) => {
+    const mockButtonAction = (inputValues: onSubmitInputValues) => {
       isCalled = true;
       receivedInputValues = inputValues;
     };
 
     // Render the component with the mock alert function as the buttonAction prop
-    render(<CreateResearchContextDialog buttonAction={mockButtonAction} />);
+    render(<CreateResearchContextDialog onSubmit={mockButtonAction} />);
     const triggerButton = screen.getByRole("button");
     fireEvent.click(triggerButton);
 
@@ -54,7 +54,7 @@ describe("<CreateResearchContextDialog/>", () => {
     });
 
     // Check if mockButtonAction has been called
-    expect(isCalled).toBe(true);
+    await waitFor(() => expect(isCalled).toBe(true));
 
     // Check if the inputs passed to the button action are correct
     expect(receivedInputValues).toEqual({
@@ -74,13 +74,13 @@ describe("<CreateResearchContextDialog/>", () => {
     let receivedInputValues;
 
     // Mock an alert function
-    const mockButtonAction = (inputValues: buttonActionInputValues) => {
+    const mockButtonAction = (inputValues: onSubmitInputValues) => {
       isCalled = true;
       receivedInputValues = inputValues;
     };
 
     // Render the component with the mock alert function as the buttonAction prop
-    render(<CreateResearchContextDialog buttonAction={mockButtonAction} />);
+    render(<CreateResearchContextDialog onSubmit={mockButtonAction} />);
     const triggerButton = screen.getByRole("button");
     fireEvent.click(triggerButton);
 
@@ -97,7 +97,7 @@ describe("<CreateResearchContextDialog/>", () => {
     });
 
     // Check if mockButtonAction has been called
-    expect(isCalled).toBe(false);
+    await waitFor(() => expect(isCalled).toBe(false));
 
     // Check if the inputs passed to the button action are correct
     expect(receivedInputValues).toBeUndefined();
@@ -108,7 +108,7 @@ describe("<CreateResearchContextDialog/>", () => {
       researchContextDescription: `Test description for a test research context`,
     });
 
-    const errorMessages = screen.queryAllByText("Required field");
+    const errorMessages = screen.queryAllByText(/is required/i);
     expect(errorMessages).toHaveLength(2);
 
     // Test for empty "Description"
@@ -119,8 +119,8 @@ describe("<CreateResearchContextDialog/>", () => {
       fireEvent.click(button);
     });
 
-    expect(isCalled).toBe(false);
-    const errorMessages2 = screen.queryAllByText("Required field");
+    await waitFor(() => expect(isCalled).toBe(false));
+    const errorMessages2 = screen.queryAllByText(/is required/i);
     expect(errorMessages2).toHaveLength(1);
 
     // Test for empty "Name"
@@ -133,8 +133,8 @@ describe("<CreateResearchContextDialog/>", () => {
       fireEvent.click(button);
     });
 
-    expect(isCalled).toBe(false);
-    const errorMessages3 = screen.queryAllByText("Required field");
+    await waitFor(() => expect(isCalled).toBe(false));
+    const errorMessages3 = screen.queryAllByText(/is required/i);
     expect(errorMessages3).toHaveLength(1);
   });
 });
