@@ -2,6 +2,8 @@
 import { Dialog as ShadcnDialog } from "@/ui/dialog";
 import { Button } from "@/components/button/index";
 import { Input as ShadcnInput } from "@/ui/input";
+import { cn } from "@/utils/utils";
+import { defaultTheme } from "@/lib/tailwind/config";
 
 import {
   Form as ShadcnForm,
@@ -24,15 +26,21 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-import { useDarkMode } from "storybook-dark-mode";
+import { PlusCircle } from "lucide-react";
 
 export interface onSubmitInputValues {
   researchContextName: string;
   researchContextDescription: string;
 }
 
+/**
+ * Props for the CreateResearchContextDialog component.
+ */
 export interface CreateResearchContextDialogProps {
+  /**
+   * Callback function that will be called when the form is submitted.
+   * @param inputValues - The input values from the form.
+   */
   onSubmit: (inputValues: onSubmitInputValues) => void;
 }
 
@@ -52,8 +60,6 @@ export const CreateResearchContextDialog = ({
   onSubmit,
   ...props
 }: CreateResearchContextDialogProps) => {
-  const isDarkMode = useDarkMode();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -73,16 +79,21 @@ export const CreateResearchContextDialog = ({
           variant="default"
           size="icon"
           label={
-            <span style={{ fontSize: "28px", fontWeight: "bold" }}>+</span>
+            <span style={{ fontSize: "28px", fontWeight: "bold" }}>
+              <PlusCircle />
+            </span> // TODO: use classname and theme
           }
         />
       </DialogTrigger>
 
       <DialogContent
-        className={`sm:max-w-md ${isDarkMode ? "bg-neutral-800 text-white" : "bg-neutral-100 text-black"}`}
+        className={cn(
+          "sm:max-w-md",
+          "bg-neutral-100 dark:bg-neutral-800",
+          "text-black dark:text-white",
+        )}
       >
-        <DialogClose asChild className="absolute top-2 right-2" />
-
+        <DialogClose asChild />
         <DialogHeader className="mb-4">
           <DialogTitle>New conversation</DialogTitle>
           <DialogDescription>
@@ -101,10 +112,10 @@ export const CreateResearchContextDialog = ({
                   <FormControl>
                     <ShadcnInput
                       style={{
-                        color: "black",
+                        color: defaultTheme.extend.colors.neutral[900],
                         borderColor: form.formState.errors.researchContextName
-                          ? "red"
-                          : "black",
+                          ? defaultTheme.extend.colors.accent.error
+                          : defaultTheme.extend.colors.neutral[900],
                         marginBottom: "8px",
                         marginTop: "8px",
                       }}
@@ -125,15 +136,12 @@ export const CreateResearchContextDialog = ({
                   <FormLabel>Description</FormLabel>
                   <FormControl>
                     <ShadcnInput
-                      style={{
-                        color: "black",
-                        borderColor: form.formState.errors
-                          .researchContextDescription
-                          ? "red"
-                          : "black",
-                        marginBottom: "8px",
-                        marginTop: "8px",
-                      }}
+                      className={cn(
+                        "text-neutral-900 mt-2 mb-2",
+                        form.formState.errors.researchContextDescription
+                          ? "border-red-500" // TODO: use theme colors
+                          : "border-neutral-300", // TODO: use theme colors
+                      )}
                       placeholder="Enter a description for the research context"
                       {...field}
                     />
