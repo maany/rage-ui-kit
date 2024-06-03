@@ -31,8 +31,8 @@ describe("<CreateResearchContextDialog/>", () => {
     expect(screen.getByRole("dialog")).toBeInTheDocument();
 
     // Simulate user input
-    const nameInput = screen.getByLabelText("Name");
-    const descriptionInput = screen.getByLabelText("Description");
+    const nameInput = screen.getByLabelText("Name *");
+    const descriptionInput = screen.getByLabelText("Description *");
     fireEvent.input(nameInput, { target: { value: `${testName}` } });
     fireEvent.input(descriptionInput, {
       target: { value: `${testDescription}` },
@@ -69,8 +69,8 @@ describe("<CreateResearchContextDialog/>", () => {
     fireEvent.click(triggerButton);
 
     // Simulate user input
-    const nameInput = screen.getByLabelText("Name");
-    const descriptionInput = screen.getByLabelText("Description");
+    const nameInput = screen.getByLabelText("Name *");
+    const descriptionInput = screen.getByLabelText("Description *");
     fireEvent.input(nameInput, { target: { value: `` } });
     fireEvent.input(descriptionInput, { target: { value: `` } });
 
