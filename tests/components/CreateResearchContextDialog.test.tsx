@@ -1,9 +1,6 @@
 import { expect, describe, it, vi } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import {
-  CreateResearchContextDialog,
-  onSubmitInputValues,
-} from "@/components/dialog/CreateResearchContextDialog";
+import { CreateResearchContextDialog } from "@/components/dialog/CreateResearchContextDialog";
 import { act } from "react-dom/test-utils";
 
 describe("<CreateResearchContextDialog/>", () => {
@@ -49,25 +46,20 @@ describe("<CreateResearchContextDialog/>", () => {
 
     // Check if mockButtonAction has been called
     await waitFor(() => expect(mockFunction).toHaveBeenCalledTimes(1));
-    
+
     // Check if the inputs passed to the button action are correct
-    expect(mockFunction).toHaveBeenCalledWith(
-      {
-        researchContextName: testName,
-        researchContextDescription: testDescription,
-      }
-    );
-    
-    expect(mockFunction).not.toHaveBeenCalledWith(
-      {
-        researchContextName: `${testName} different`,
-        researchContextDescription: `${testDescription} different`,
-      }
-    );
+    expect(mockFunction).toHaveBeenCalledWith({
+      researchContextName: testName,
+      researchContextDescription: testDescription,
+    });
+
+    expect(mockFunction).not.toHaveBeenCalledWith({
+      researchContextName: `${testName} different`,
+      researchContextDescription: `${testDescription} different`,
+    });
   });
 
   it('should show "Required Field" in the screen if any of the input values is empty', async () => {
-
     const onSubmit = () => {};
     const mockFunction = vi.fn().mockImplementation(onSubmit);
 
@@ -90,7 +82,6 @@ describe("<CreateResearchContextDialog/>", () => {
 
     // Check if mockButtonAction has been called
     await waitFor(() => expect(mockFunction).not.toHaveBeenCalled());
-
 
     const errorMessages = screen.queryAllByText(/is required/i);
     expect(errorMessages).toHaveLength(2);

@@ -27,8 +27,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { PlusCircle } from "lucide-react";
 
-
-/** 
+/**
  * Interface representing the input values for the onSubmit function.
  */
 export interface onSubmitInputValues {
@@ -51,10 +50,12 @@ export interface CreateResearchContextDialogProps {
  */
 const formSchema = z.object({
   researchContextName: z.string().min(6, {
-    message: "Research context name is required and must be at least 6 characters long",
+    message:
+      "Research context name is required and must be at least 6 characters long",
   }),
   researchContextDescription: z.string().min(10, {
-    message: "Research context description is required and must be at least 10 characters long",
+    message:
+      "Research context description is required and must be at least 10 characters long",
   }),
 });
 
@@ -65,7 +66,6 @@ export const CreateResearchContextDialog = ({
   onSubmit,
   ...props
 }: CreateResearchContextDialogProps) => {
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -79,14 +79,12 @@ export const CreateResearchContextDialog = ({
   };
 
   return (
-
     <ShadcnDialog {...props}>
-
       <DialogTrigger asChild>
         <Button
           variant="default"
           size="icon"
-          label={<PlusCircle/>}  // Carla: find a good icon
+          label={<PlusCircle />} // Carla: find a good icon
         />
       </DialogTrigger>
 
@@ -108,60 +106,57 @@ export const CreateResearchContextDialog = ({
 
         <ShadcnForm {...form}>
           <form onSubmit={form.handleSubmit(onSubmitWrapper)}>
+            <div className={cn("mt-medium mb-medium")}>
+              <FormField
+                control={form.control}
+                name="researchContextName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name *</FormLabel>
 
-          <div className={cn("mt-medium mb-medium")}>
-            <FormField
-              control={form.control}
-              name="researchContextName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name *</FormLabel>
+                    <FormControl>
+                      <ShadcnInput
+                        className={cn(
+                          "text-neutral-900",
+                          form.formState.errors.researchContextName
+                            ? "border-error-500"
+                            : "border-neutral-300",
+                        )}
+                        placeholder="Enter a name for the research context"
+                        {...field}
+                      />
+                    </FormControl>
 
-                  <FormControl>
-                    <ShadcnInput
-                      className={cn(
-                        "text-neutral-900",
-                        form.formState.errors.researchContextName
-                          ? "border-error-500"
-                          : "border-neutral-300",
-                      )}
-                      placeholder="Enter a name for the research context"
-                      {...field}
-                    />
-                  </FormControl>
-
-                  <FormMessage className={cn("text-error-500")}/>
-
-                </FormItem>
-              )}
-            />
+                    <FormMessage className={cn("text-error-500")} />
+                  </FormItem>
+                )}
+              />
             </div>
 
             <div className={cn("mt-medium mb-medium")}>
-            <FormField
-              control={form.control}
-              name="researchContextDescription"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description *</FormLabel>
-                  <FormControl>
-                    <ShadcnInput
-                      className={cn(
-                        "text-neutral-900 ",
-                        form.formState.errors.researchContextDescription
-                          ? "border-error-500"
-                          : "border-neutral-300",
-                      )}
-                      placeholder="Enter a description for the research context"
-                      {...field}
-                    />
-                  </FormControl>
+              <FormField
+                control={form.control}
+                name="researchContextDescription"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description *</FormLabel>
+                    <FormControl>
+                      <ShadcnInput
+                        className={cn(
+                          "text-neutral-900 ",
+                          form.formState.errors.researchContextDescription
+                            ? "border-error-500"
+                            : "border-neutral-300",
+                        )}
+                        placeholder="Enter a description for the research context"
+                        {...field}
+                      />
+                    </FormControl>
 
-                  <FormMessage className={cn("text-error-500")}/>
-
-                </FormItem>
-              )}
-            />
+                    <FormMessage className={cn("text-error-500")} />
+                  </FormItem>
+                )}
+              />
             </div>
 
             <div className={cn("text-center")}>
