@@ -23,17 +23,11 @@ describe("<CreateResearchContextDialog/>", () => {
     const testName = "Test Name";
     const testDescription = "Test description for a test research context";
 
-    let isCalled = false;
-    let receivedInputValues;
     const onSubmit = () => {};
-    const mock = vi.fn().mockImplementation(onSubmit);
-    // Mock an alert function
-    const mockButtonAction = (inputValues: onSubmitInputValues) => {
-      isCalled = true;
-      receivedInputValues = inputValues;
-    };
+    const mockFunction = vi.fn().mockImplementation(onSubmit);
+
     // Render the component with the mock alert function as the buttonAction prop
-    render(<CreateResearchContextDialog onSubmit={mock} />);
+    render(<CreateResearchContextDialog onSubmit={mockFunction} />);
     const triggerButton = screen.getByRole("button");
     fireEvent.click(triggerButton);
 
@@ -53,36 +47,32 @@ describe("<CreateResearchContextDialog/>", () => {
       fireEvent.click(button);
     });
 
-    await waitFor(() => expect(mock).toHaveBeenCalledTimes(1));
-    // expect(mock).toHaveBeenCalledWith();
     // Check if mockButtonAction has been called
-    // await waitFor(() => expect(isCalled).toBe(true));
-
+    await waitFor(() => expect(mockFunction).toHaveBeenCalledTimes(1));
+    
     // Check if the inputs passed to the button action are correct
-    // expect(receivedInputValues).toEqual({
-    //   researchContextName: testName,
-    //   researchContextDescription: testDescription,
-    // });
-
-    // // Check if the inputs passed to the button action are different than other values
-    // expect(receivedInputValues).not.toEqual({
-    //   researchContextName: `${testName} different`,
-    //   researchContextDescription: `${testDescription} different`,
-    // });
+    expect(mockFunction).toHaveBeenCalledWith(
+      {
+        researchContextName: testName,
+        researchContextDescription: testDescription,
+      }
+    );
+    
+    expect(mockFunction).not.toHaveBeenCalledWith(
+      {
+        researchContextName: `${testName} different`,
+        researchContextDescription: `${testDescription} different`,
+      }
+    );
   });
 
   it('should show "Required Field" in the screen if any of the input values is empty', async () => {
-    let isCalled = false;
-    let receivedInputValues;
 
-    // Mock an alert function
-    const mockButtonAction = (inputValues: onSubmitInputValues) => {
-      isCalled = true;
-      receivedInputValues = inputValues;
-    };
+    const onSubmit = () => {};
+    const mockFunction = vi.fn().mockImplementation(onSubmit);
 
     // Render the component with the mock alert function as the buttonAction prop
-    render(<CreateResearchContextDialog onSubmit={mockButtonAction} />);
+    render(<CreateResearchContextDialog onSubmit={mockFunction} />);
     const triggerButton = screen.getByRole("button");
     fireEvent.click(triggerButton);
 
@@ -99,16 +89,8 @@ describe("<CreateResearchContextDialog/>", () => {
     });
 
     // Check if mockButtonAction has been called
-    await waitFor(() => expect(isCalled).toBe(false));
+    await waitFor(() => expect(mockFunction).not.toHaveBeenCalled());
 
-    // Check if the inputs passed to the button action are correct
-    expect(receivedInputValues).toBeUndefined();
-
-    // Check if the inputs passed to the button action are different than other values
-    expect(receivedInputValues).not.toEqual({
-      researchContextName: `Test Name`,
-      researchContextDescription: `Test description for a test research context`,
-    });
 
     const errorMessages = screen.queryAllByText(/is required/i);
     expect(errorMessages).toHaveLength(2);
@@ -121,7 +103,7 @@ describe("<CreateResearchContextDialog/>", () => {
       fireEvent.click(button);
     });
 
-    await waitFor(() => expect(isCalled).toBe(false));
+    await waitFor(() => expect(mockFunction).not.toHaveBeenCalled());
     const errorMessages2 = screen.queryAllByText(/is required/i);
     expect(errorMessages2).toHaveLength(1);
 
@@ -135,7 +117,7 @@ describe("<CreateResearchContextDialog/>", () => {
       fireEvent.click(button);
     });
 
-    await waitFor(() => expect(isCalled).toBe(false));
+    await waitFor(() => expect(mockFunction).not.toHaveBeenCalled());
     const errorMessages3 = screen.queryAllByText(/is required/i);
     expect(errorMessages3).toHaveLength(1);
   });

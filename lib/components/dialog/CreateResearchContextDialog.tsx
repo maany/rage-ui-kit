@@ -3,7 +3,6 @@ import { Dialog as ShadcnDialog } from "@/ui/dialog";
 import { Button } from "@/components/button/index";
 import { Input as ShadcnInput } from "@/ui/input";
 import { cn } from "@/utils/utils";
-import { defaultTheme } from "@/lib/tailwind/config";
 
 import {
   Form as ShadcnForm,
@@ -28,6 +27,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { PlusCircle } from "lucide-react";
 
+
+/** 
+ * Interface representing the input values for the onSubmit function.
+ */
 export interface onSubmitInputValues {
   researchContextName: string;
   researchContextDescription: string;
@@ -39,17 +42,19 @@ export interface onSubmitInputValues {
 export interface CreateResearchContextDialogProps {
   /**
    * Callback function that will be called when the form is submitted.
-   * @param inputValues - The input values from the form.
    */
   onSubmit: (inputValues: onSubmitInputValues) => void;
 }
 
+/**
+ * Zod schema for the form values.
+ */
 const formSchema = z.object({
-  researchContextName: z.string().min(1, {
-    message: "Research context name is required",
+  researchContextName: z.string().min(6, {
+    message: "Research context name is required and must be at least 6 characters long",
   }),
-  researchContextDescription: z.string().min(1, {
-    message: "Research context description is required",
+  researchContextDescription: z.string().min(10, {
+    message: "Research context description is required and must be at least 10 characters long",
   }),
 });
 
@@ -60,6 +65,7 @@ export const CreateResearchContextDialog = ({
   onSubmit,
   ...props
 }: CreateResearchContextDialogProps) => {
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -73,16 +79,14 @@ export const CreateResearchContextDialog = ({
   };
 
   return (
+
     <ShadcnDialog {...props}>
+
       <DialogTrigger asChild>
         <Button
           variant="default"
           size="icon"
-          label={
-            <span style={{ fontSize: "28px", fontWeight: "bold" }}>
-              <PlusCircle />
-            </span> // TODO: use classname and theme
-          }
+          label={<PlusCircle/>}  // Carla: find a good icon
         />
       </DialogTrigger>
 
@@ -94,7 +98,8 @@ export const CreateResearchContextDialog = ({
         )}
       >
         <DialogClose asChild />
-        <DialogHeader className="mb-4">
+
+        <DialogHeader>
           <DialogTitle>New conversation</DialogTitle>
           <DialogDescription>
             Create a new conversation to organize your research
@@ -103,57 +108,65 @@ export const CreateResearchContextDialog = ({
 
         <ShadcnForm {...form}>
           <form onSubmit={form.handleSubmit(onSubmitWrapper)}>
+
+          <div className={cn("mt-medium mb-medium")}>
             <FormField
               control={form.control}
               name="researchContextName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Name *</FormLabel>
+
                   <FormControl>
                     <ShadcnInput
-                      style={{
-                        color: defaultTheme.extend.colors.neutral[900],
-                        borderColor: form.formState.errors.researchContextName
-                          ? defaultTheme.extend.colors.accent.error
-                          : defaultTheme.extend.colors.neutral[900],
-                        marginBottom: "8px",
-                        marginTop: "8px",
-                      }}
+                      className={cn(
+                        "text-neutral-900",
+                        form.formState.errors.researchContextName
+                          ? "border-error-500"
+                          : "border-neutral-300",
+                      )}
                       placeholder="Enter a name for the research context"
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage style={{ color: "red" }} />
+
+                  <FormMessage className={cn("text-error-500")}/>
+
                 </FormItem>
               )}
             />
+            </div>
 
+            <div className={cn("mt-medium mb-medium")}>
             <FormField
               control={form.control}
               name="researchContextDescription"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Description *</FormLabel>
                   <FormControl>
                     <ShadcnInput
                       className={cn(
-                        "text-neutral-900 mt-2 mb-2",
+                        "text-neutral-900 ",
                         form.formState.errors.researchContextDescription
-                          ? "border-red-500" // TODO: use theme colors
-                          : "border-neutral-300", // TODO: use theme colors
+                          ? "border-error-500"
+                          : "border-neutral-300",
                       )}
                       placeholder="Enter a description for the research context"
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage style={{ color: "red" }} />
+
+                  <FormMessage className={cn("text-error-500")}/>
+
                 </FormItem>
               )}
             />
+            </div>
 
-            <div style={{ textAlign: "center" }}>
+            <div className={cn("text-center")}>
               <Button
-                className="mt-8"
+                className="mt-large"
                 variant="default"
                 size="default"
                 label="Create new research context"
