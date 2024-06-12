@@ -1,9 +1,6 @@
-import { expect, describe, it } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
-import {
-  CreateConversationDialog,
-  buttonActionInputValues,
-} from "@/components/dialog/CreateConversationDialog";
+import { expect, describe, it, vi } from "vitest";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { CreateConversationDialog } from "@/components/dialog/CreateConversationDialog";
 import { act } from "react-dom/test-utils";
 
 describe("<CreateConversationDialog/>", () => {
@@ -20,26 +17,20 @@ describe("<CreateConversationDialog/>", () => {
   });
 
   it("should pass the correct values to the buttonAction function when the create button is clicked", async () => {
-    const testTitle = "Test Title";
+    const testTitle = "Test title for a test conversation dialog";
 
-    let isCalled = false;
-    let receivedInputValues;
-
-    // Mock an alert function
-    const mockButtonAction = (inputValues: buttonActionInputValues) => {
-      isCalled = true;
-      receivedInputValues = inputValues;
-    };
+    const buttonAction = () => {};
+    const mockFunction = vi.fn().mockImplementation(buttonAction);
 
     // Render the component with the mock alert function as the buttonAction prop
-    render(<CreateConversationDialog buttonAction={mockButtonAction} />);
+    render(<CreateConversationDialog buttonAction={mockFunction} />);
     const triggerButton = screen.getByRole("button");
     fireEvent.click(triggerButton);
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
 
     // Simulate user input
-    const titleInput = screen.getByLabelText("Title");
+    const titleInput = screen.getByLabelText("Conversation title *");
     fireEvent.input(titleInput, { target: { value: `${testTitle}` } });
 
     // Simulate button click
@@ -49,36 +40,29 @@ describe("<CreateConversationDialog/>", () => {
     });
 
     // Check if mockButtonAction has been called
-    expect(isCalled).toBe(true);
+    await waitFor(() => expect(mockFunction).toHaveBeenCalledTimes(1));
 
     // Check if the inputs passed to the button action are correct
-    expect(receivedInputValues).toEqual({
+    expect(mockFunction).toHaveBeenCalledWith({
       conversationTitle: testTitle,
     });
 
-    // Check if the inputs passed to the button action are different than other values
-    expect(receivedInputValues).not.toEqual({
+    expect(mockFunction).not.toHaveBeenCalledWith({
       conversationTitle: `${testTitle} different`,
     });
   });
 
-  it('should show "Required Field" in the screen if the input value is empty', async () => {
-    let isCalled = false;
-    let receivedInputValues;
-
-    // Mock an alert function
-    const mockButtonAction = (inputValues: buttonActionInputValues) => {
-      isCalled = true;
-      receivedInputValues = inputValues;
-    };
+  it("should show an error message in the screen if the input value is empty", async () => {
+    const buttonAction = () => {};
+    const mockFunction = vi.fn().mockImplementation(buttonAction);
 
     // Render the component with the mock alert function as the buttonAction prop
-    render(<CreateConversationDialog buttonAction={mockButtonAction} />);
+    render(<CreateConversationDialog buttonAction={mockFunction} />);
     const triggerButton = screen.getByRole("button");
     fireEvent.click(triggerButton);
 
     // Simulate user input
-    const titleInput = screen.getByLabelText("Title");
+    const titleInput = screen.getByLabelText("Conversation title *");
     fireEvent.input(titleInput, { target: { value: `` } });
 
     // Simulate button click
@@ -88,17 +72,20 @@ describe("<CreateConversationDialog/>", () => {
     });
 
     // Check if mockButtonAction has been called
-    expect(isCalled).toBe(false);
+    await waitFor(() => expect(mockFunction).not.toHaveBeenCalled());
 
-    // Check if the inputs passed to the button action are correct
-    expect(receivedInputValues).toBeUndefined();
+    const errorMessages = screen.queryAllByText(/is required/i);
+    expect(errorMessages).toHaveLength(1);
 
-    // Check if the inputs passed to the button action are different than other values
-    expect(receivedInputValues).not.toEqual({
-      conversationTitle: `Test Title`,
+    // Test for empty "Title"
+    fireEvent.input(titleInput, { target: { value: `` } });
+
+    act(() => {
+      fireEvent.click(button);
     });
 
-    const errorMessages = screen.queryAllByText("Required field");
-    expect(errorMessages).toHaveLength(1);
+    await waitFor(() => expect(mockFunction).not.toHaveBeenCalled());
+    const errorMessages2 = screen.queryAllByText(/is required/i);
+    expect(errorMessages2).toHaveLength(1);
   });
 });
