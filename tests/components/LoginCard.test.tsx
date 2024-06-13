@@ -63,8 +63,6 @@ describe("<LoginCard/>", () => {
 
     // Render the component with the mock alert function as the buttonAction prop
     render(<LoginCard buttonAction={mockFunction} />);
-    const triggerButton = screen.getByText("Login");
-    fireEvent.click(triggerButton);
 
     // Simulate user input
     const usernameInput = screen.getByPlaceholderText("Enter your username");

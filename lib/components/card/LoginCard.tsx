@@ -118,7 +118,7 @@ export const LoginCard = ({ buttonAction, ...props }: LoginCardProps) => {
                   <FormItem>
                     <FormLabel>Password *</FormLabel>
                     <FormControl>
-                      <div style={{ position: "relative" }}>
+                      <div className={cn("relative")}>
                         <ShadcnInput
                           className={cn(
                             "text-neutral-900",

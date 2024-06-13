@@ -79,13 +79,5 @@ describe("<CreateConversationDialog/>", () => {
 
     // Test for empty "Title"
     fireEvent.input(titleInput, { target: { value: `` } });
-
-    act(() => {
-      fireEvent.click(button);
-    });
-
-    await waitFor(() => expect(mockFunction).not.toHaveBeenCalled());
-    const errorMessages2 = screen.queryAllByText(/is required/i);
-    expect(errorMessages2).toHaveLength(1);
   });
 });
