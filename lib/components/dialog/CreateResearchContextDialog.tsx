@@ -25,7 +25,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { PlusCircle } from "lucide-react";
+import { PiIcon, PlusCircle } from "lucide-react";
 
 /**
  * Interface representing the input values for the onSubmit function.
@@ -91,8 +91,9 @@ export const CreateResearchContextDialog = ({
       <DialogContent
         className={cn(
           "sm:max-w-md",
+          "flex flex-col items-center justify-between gap-4",
           "bg-neutral-100 dark:bg-neutral-800",
-          "text-black dark:text-white",
+          "text-black dark:text-white"
         )}
       >
         <DialogClose asChild />
@@ -106,34 +107,29 @@ export const CreateResearchContextDialog = ({
 
         <ShadcnForm {...form}>
           <form onSubmit={form.handleSubmit(onSubmitWrapper)}>
-            <div className={cn("mt-medium mb-medium")}>
+            <div className="flex flex-col gap-medium">
               <FormField
                 control={form.control}
                 name="researchContextName"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Name *</FormLabel>
-
                     <FormControl>
                       <ShadcnInput
                         className={cn(
                           "text-neutral-900",
                           form.formState.errors.researchContextName
                             ? "border-error-500"
-                            : "border-neutral-300",
+                            : "border-neutral-300"
                         )}
                         placeholder="Enter a name for the research context"
                         {...field}
                       />
                     </FormControl>
-
                     <FormMessage className={cn("text-error-500")} />
                   </FormItem>
                 )}
               />
-            </div>
-
-            <div className={cn("mt-medium mb-medium")}>
               <FormField
                 control={form.control}
                 name="researchContextDescription"
@@ -146,20 +142,16 @@ export const CreateResearchContextDialog = ({
                           "text-neutral-900 ",
                           form.formState.errors.researchContextDescription
                             ? "border-error-500"
-                            : "border-neutral-300",
+                            : "border-neutral-300"
                         )}
                         placeholder="Enter a description for the research context"
                         {...field}
                       />
                     </FormControl>
-
                     <FormMessage className={cn("text-error-500")} />
                   </FormItem>
                 )}
               />
-            </div>
-
-            <div className={cn("text-center")}>
               <Button
                 className="mt-large"
                 variant="default"

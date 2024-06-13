@@ -72,9 +72,12 @@ export const LoginCard = ({ buttonAction, ...props }: LoginCardProps) => {
     <ShadcnCard {...props}>
       <CardContent
         className={cn(
+          "flex flex-col items-center justify-between gap-medium",
           "sm:max-w-md",
+          "w-full",
+          "p-4",
           "bg-neutral-100 dark:bg-neutral-800",
-          "text-black dark:text-white",
+          "text-black dark:text-white"
         )}
       >
         <CardHeader>
@@ -83,48 +86,53 @@ export const LoginCard = ({ buttonAction, ...props }: LoginCardProps) => {
 
         <ShadcnForm {...form}>
           <form onSubmit={form.handleSubmit(buttonActionWrapper)}>
-            <div className={cn("mt-medium mb-medium")}>
+            <div className="flex flex-col items-stretch justify-between gap-medium">
               <FormField
                 control={form.control}
                 name="userName"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Username *</FormLabel>
-
                     <FormControl>
                       <ShadcnInput
                         className={cn(
                           "text-neutral-900",
                           form.formState.errors.userName
                             ? "border-error-500"
-                            : "border-neutral-300",
+                            : "border-neutral-300"
                         )}
                         placeholder="Enter your username"
                         {...field}
                       />
                     </FormControl>
-
                     <FormMessage className={cn("text-error-500")} />
                   </FormItem>
                 )}
               />
-            </div>
-
-            <div className={cn("mt-medium mb-medium")}>
               <FormField
                 control={form.control}
                 name="userPassword"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="relative">
                     <FormLabel>Password *</FormLabel>
                     <FormControl>
-                      <div className={cn("relative")}>
+                      <div
+                        className={cn(
+                          "flex flex-row bg-white",
+                          "text-neutral-900",
+                          "rounded-lg",
+                          form.formState.errors.userPassword
+                            ? "border-error-500"
+                            : "border-neutral-300"
+                        )}
+                      >
                         <ShadcnInput
                           className={cn(
-                            "text-neutral-900",
-                            form.formState.errors.userPassword
-                              ? "border-error-500"
-                              : "border-neutral-300",
+                            "appearance-none",
+                            "border-none",
+                            "focus:outline-none",
+                            "focus:ring-0",
+                            "ring-0",
                           )}
                           type={showPassword ? "text" : "password"}
                           placeholder="Enter your password"
@@ -134,10 +142,10 @@ export const LoginCard = ({ buttonAction, ...props }: LoginCardProps) => {
                           type="button"
                           onClick={togglePasswordVisibility}
                           className={cn(
-                            "absolute right-2 top-1/2 transform -translate-y-1/2",
+                            "",
                             "text-black dark:text-black",
                             "bg-none",
-                            "border-none",
+                            "border-none"
                           )}
                         >
                           {showPassword ? (
@@ -148,16 +156,12 @@ export const LoginCard = ({ buttonAction, ...props }: LoginCardProps) => {
                         </button>
                       </div>
                     </FormControl>
-
                     <FormMessage className={cn("text-error-500")} />
                   </FormItem>
                 )}
               />
-            </div>
-
-            <div className={cn("text-center")}>
               <Button
-                className="mt-large"
+                className=""
                 variant="default"
                 size="default"
                 label="Login"
