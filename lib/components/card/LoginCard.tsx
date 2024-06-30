@@ -72,18 +72,28 @@ export const LoginCard = ({ buttonAction, ...props }: LoginCardProps) => {
     <ShadcnCard {...props}>
       <CardContent
         className={cn(
-          "sm:max-w-md",
+          "flex flex-col xl:flex-row items-center justify-between p-4 xl:py-12",
           "bg-neutral-100 dark:bg-neutral-800",
-          "text-black dark:text-white",
+          "text-black dark:text-white"
         )}
       >
         <CardHeader>
-          <CardTitle>Welcome to SDA</CardTitle>
+          <CardTitle className="xl:animate-fadeInUp animate-carla-spin font-gluten">Welcome to SDA</CardTitle>
+          <h1>JAJAJAJA</h1>
         </CardHeader>
 
         <ShadcnForm {...form}>
-          <form onSubmit={form.handleSubmit(buttonActionWrapper)}>
-            <div className={cn("mt-medium mb-medium")}>
+          <form
+            className={cn(
+              "flex flex-col items-center justify-center gap-medium"
+            )}
+            onSubmit={form.handleSubmit(buttonActionWrapper)}
+          >
+            <div
+              className={cn(
+                "flex flex-col items-center justify-between gap-medium"
+              )}
+            >
               <FormField
                 control={form.control}
                 name="userName"
@@ -97,7 +107,7 @@ export const LoginCard = ({ buttonAction, ...props }: LoginCardProps) => {
                           "text-neutral-900",
                           form.formState.errors.userName
                             ? "border-error-500"
-                            : "border-neutral-300",
+                            : "border-neutral-300"
                         )}
                         placeholder="Enter your username"
                         {...field}
@@ -110,45 +120,59 @@ export const LoginCard = ({ buttonAction, ...props }: LoginCardProps) => {
               />
             </div>
 
-            <div className={cn("mt-medium mb-medium")}>
+            <div
+              className={cn(
+                "w-full flex flex-col items-center justify-center px-4"
+              )}
+            >
               <FormField
                 control={form.control}
                 name="userPassword"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password *</FormLabel>
-                    <FormControl>
-                      <div className={cn("relative")}>
-                        <ShadcnInput
-                          className={cn(
-                            "text-neutral-900",
-                            form.formState.errors.userPassword
-                              ? "border-error-500"
-                              : "border-neutral-300",
-                          )}
-                          type={showPassword ? "text" : "password"}
-                          placeholder="Enter your password"
-                          {...field}
-                        />
-                        <button
-                          type="button"
-                          onClick={togglePasswordVisibility}
-                          className={cn(
-                            "absolute right-2 top-1/2 transform -translate-y-1/2",
-                            "text-black dark:text-black",
-                            "bg-none",
-                            "border-none",
-                          )}
-                        >
-                          {showPassword ? (
-                            <EyeOff size={16} />
-                          ) : (
-                            <Eye size={16} />
-                          )}
-                        </button>
-                      </div>
-                    </FormControl>
-
+                    <div
+                      className={cn(
+                        "border border-input rounded-md",
+                        form.formState.errors.userPassword
+                          ? "border border-error-500"
+                          : "border-neutral-300"
+                      )}
+                    >
+                      <FormControl>
+                        <div className={cn("w-full flex flex-row px-0")}>
+                          <div className="flex flex-row items-center justify-between border-none rounded-md bg-white focus-within:ring-2 ring-ring ring-offset-background ring-offset-2">
+                            <ShadcnInput
+                              className={cn(
+                                "focus-visible:ring-3 pr-1",
+                                "border-none",
+                                "text-neutral-900"
+                              )}
+                              type={showPassword ? "text" : "password"}
+                              placeholder="Enter your password"
+                              {...field}
+                            />
+                            <div className="flex flex-row items-center justify-between text-black bg-white rounded-md">
+                              <button
+                                type="button"
+                                onClick={togglePasswordVisibility}
+                                className={cn(
+                                  "flex items-center justify-center",
+                                  "bg-none",
+                                  "border-none"
+                                )}
+                              >
+                                {showPassword ? (
+                                  <EyeOff size={16} />
+                                ) : (
+                                  <Eye size={16} />
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </FormControl>
+                    </div>
                     <FormMessage className={cn("text-error-500")} />
                   </FormItem>
                 )}
@@ -157,7 +181,6 @@ export const LoginCard = ({ buttonAction, ...props }: LoginCardProps) => {
 
             <div className={cn("text-center")}>
               <Button
-                className="mt-large"
                 variant="default"
                 size="default"
                 label="Login"
